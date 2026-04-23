@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NeuralChat — Access Terminal</title>
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+  <div class="decorative-dots top-left">...</div>
+  <div class="decorative-dots bottom-left">...</div>
+
+  <div class="auth-container">
+    <div class="brand">
+      <div class="brand-icon">
+        <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2l9 4.9v10.2L12 22l-9-4.9V6.9L12 2z"></path>
+        </svg>
+      </div>
+      <h1 class="brand-name">NeuralChat</h1>
+      <p class="brand-tagline">AI-POWERED CHAT BACKEND SYSTEM</p>
+    </div>
+
+    <div class="tab-switcher">
+      <button class="tab active" id="tab-login" onclick="switchTab('login')">Login</button>
+      <button class="tab" id="tab-register" onclick="switchTab('register')">Register</button>
+      <div class="tab-indicator" id="tab-indicator"></div>
+    </div>
+
+    <!-- LOGIN -->
+    <div class="form-panel" id="panel-login">
+      <div id="login-error" class="alert alert-error hidden"></div>
+      <div id="login-success" class="alert alert-success hidden"></div>
+
+      <div class="form-group">
+        <label class="form-label">EMAIL ADDRESS</label>
+        <input type="email" id="login-email" class="form-input" placeholder="1234@gmail.com" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">PASSWORD</label>
+        <div class="input-wrapper">
+          <input type="password" id="login-password" class="form-input" placeholder="••••••" />
+          <button type="button" class="toggle-pass" onclick="togglePassword('login-password', this)">👁</button>
+        </div>
+      </div>
+
+      <button id="btn-login" class="btn-primary" onclick="handleLogin()">
+        <span class="btn-text">Sign In</span>
+        <span class="btn-loader hidden">⟳</span>
+      </button>
+
+      <p class="form-footer">
+        Don't have an account? 
+        <a href="#" onclick="switchTab('register')">Create one</a>
+      </p>
+    </div>
+
+    <!-- REGISTER -->
+    <div class="form-panel hidden" id="panel-register">
+      <div id="register-error" class="alert alert-error hidden"></div>
+      <div id="register-success" class="alert alert-success hidden"></div>
+
+      <div class="form-group">
+        <label class="form-label">USERNAME</label>
+        <input type="text" id="reg-username" class="form-input" placeholder="Neural_User" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">EMAIL ADDRESS</label>
+        <input type="email" id="reg-email" class="form-input" placeholder="1234@gmail.com" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">PASSWORD</label>
+        <div class="input-wrapper">
+          <input type="password" id="reg-password" class="form-input" placeholder="Min 6 characters" />
+          <button type="button" class="toggle-pass" onclick="togglePassword('reg-password', this)">👁</button>
+        </div>
+      </div>
+
+      <button id="btn-register" class="btn-primary" onclick="handleRegister()">
+        <span class="btn-text">Create Account</span>
+        <span class="btn-loader hidden">⟳</span>
+      </button>
+
+      <p class="form-footer">
+        Already have an account? 
+        <a href="#" onclick="switchTab('login')">Login</a>
+      </p>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+</body>
+</html>

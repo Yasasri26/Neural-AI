@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NeuralChat — Deep Intelligence</title>
+  <link rel="stylesheet" href="css/chat.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2l9 4.9v10.2L12 22l-9-4.9V6.9L12 2z"></path>
+        </svg>
+      </div>
+      <span class="brand-name">NeuralChat</span>
+    </div>
+
+    <div class="user-profile">
+      <div class="avatar" id="user-avatar">?</div>
+      <div class="user-info">
+        <div class="user-name" id="sidebar-username">Loading...</div>
+        <div class="user-status">Online</div>
+      </div>
+    </div>
+
+    <div class="sidebar-actions">
+      <button class="btn-new-chat" onclick="createNewChat()">
+        <span>+</span> New Conversation
+      </button>
+    </div>
+
+    <nav class="sidebar-nav" id="chat-list">
+      <!-- Session items injected here -->
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="btn-logout" onclick="handleLogout()">
+        <span class="logout-icon">⏻</span> Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="chat-main">
+    <header class="chat-header">
+      <div class="chat-title">
+        <span id="chat-heading" class="chat-heading-text">Select a Conversation</span>
+      </div>
+      <div class="header-actions">
+        <span id="msg-count" class="msg-count">0 messages</span>
+        <button class="btn-refresh" title="Refresh Messages" onclick="refreshMessages()">↺</button>
+      </div>
+    </header>
+
+    <div class="messages-container" id="messages-container">
+      <div class="empty-state">
+        <div class="empty-icon">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l9 4.9v10.2L12 22l-9-4.9V6.9L12 2z"></path>
+          </svg>
+        </div>
+        <h2>Ready to assist</h2>
+        <p>Select a conversation from the sidebar or start a new one to begin.</p>
+      </div>
+    </div>
+
+    <footer class="chat-footer" id="chat-footer" style="display: none;">
+      <div class="input-wrapper">
+        <textarea id="message-input" class="message-textarea" placeholder="Message NeuralChat..." rows="1" disabled></textarea>
+        <div class="input-footer">
+          <div id="char-counter" class="char-count">0 / 1000</div>
+          <button id="btn-send" class="btn-send" onclick="sendMessage()" disabled>
+            Send Entry ➔
+          </button>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <!-- MODALS -->
+  <!-- Rename Modal -->
+  <div id="rename-modal" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header"><h3>Rename Conversation</h3></div>
+      <div class="modal-body">
+        <input type="text" id="rename-input" class="modal-input" placeholder="Enter new title...">
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeRenameModal()">Cancel</button>
+        <button class="btn-primary" onclick="confirmRename()">Update</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/chat.js"></script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+{
+  "info": {
+    "name": "AI Chat Backend API",
+    "_postman_id": "ai-chat-backend-collection",
+    "description": "Complete API collection for AI Chat Backend System. Test all endpoints here.\n\nSetup:\n1. Start your backend: cd backend && npm run dev\n2. Set the {{base_url}} variable to http://localhost:5000\n3. After login, copy the token and set {{token}} variable",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:5000", "type": "string" },
+    { "key": "token",    "value": "PASTE_YOUR_JWT_TOKEN_HERE", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "0. Health Check",
+      "item": [
+        {
+          "name": "API Health Check",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api",
+            "description": "Verify the server is running"
+          }
+        }
+      ]
+    },
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Register New User",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/auth/register",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"yasasri\",\n  \"email\": \"yasasri@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "description": "Register a new user account. Returns userId, username, email."
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Automatically save the token after login",
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.token) {",
+                  "  pm.collectionVariables.set('token', json.data.token);",
+                  "  console.log('Token saved:', json.data.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/auth/login",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"yasasri@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "description": "Login with email and password. Returns JWT token — the test script auto-saves it."
+          }
+        },
+        {
+          "name": "Get My Profile (Protected)",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/auth/profile",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "description": "Get the logged-in user's profile. Requires Authorization header."
+          }
+        },
+        {
+          "name": "Register - Validation Error",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/auth/register",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"ab\",\n  \"email\": \"not-an-email\",\n  \"password\": \"123\"\n}"
+            },
+            "description": "Test validation errors — should return 400 with field errors."
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Messages (CRUD)",
+      "item": [
+        {
+          "name": "Create Message",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/messages",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Hello everyone! This is my first message in the AI Chat System.\"\n}"
+            },
+            "description": "Send a new chat message. Requires token."
+          }
+        },
+        {
+          "name": "Get All Messages",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/messages",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "description": "Retrieve full chat history with usernames. Requires token."
+          }
+        },
+        {
+          "name": "Get My Messages",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/messages/my",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "description": "Get only messages sent by the logged-in user."
+          }
+        },
+        {
+          "name": "Get Message by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/messages/1",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "description": "Get a specific message by its ID. Change '1' to any valid message ID."
+          }
+        },
+        {
+          "name": "Update Message",
+          "request": {
+            "method": "PUT",
+            "url": "{{base_url}}/api/messages/1",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"This message has been edited!\"\n}"
+            },
+            "description": "Edit a message. Only the owner can edit. Change '1' to your message ID."
+          }
+        },
+        {
+          "name": "Delete Message",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/api/messages/1",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "description": "Delete a message. Only the owner can delete. Change '1' to your message ID."
+          }
+        },
+        {
+          "name": "Create Message - Empty Content (Error)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/messages",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"\"\n}"
+            },
+            "description": "Test validation — empty content should return 400 error."
+          }
+        },
+        {
+          "name": "Access Without Token (Error)",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/messages",
+            "description": "Test auth protection — no token should return 401 Unauthorized."
+          }
+        }
+      ]
+    }
+  ]
+}
